@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Timer</title>
 </head>
 <body>
 <div class="js--timer"></div>
@@ -19,15 +20,19 @@
             this.timerId = undefined;
             this.start = this.start.bind(this);
             this.stop = this.stop.bind(this);
+            this.show();
+        }
+
+        show() {
+            const minutes = Math.floor(this.seconds / 60);
+            const seconds = this.seconds % 60;
+            this.element.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
         start() {
             this.timerId = setInterval(() => {
-                const minutes = Math.floor(this.seconds / 60);
-                const seconds = this.seconds % 60;
-
-                this.element.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
+                this.show();
+                document.querySelector('.btn-start').setAttribute('disabled', 'disabled');
                 if (this.seconds === 0) {
                     clearInterval(this.timerId);
                 } else {
@@ -37,6 +42,7 @@
         }
 
         stop() {
+            document.querySelector('.btn-start').removeAttribute('disabled');
             clearInterval(this.timerId);
         }
     }
